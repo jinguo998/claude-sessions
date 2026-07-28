@@ -1,0 +1,19 @@
+# Binary (root level only)
+/claude-sessions
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test
+coverage.out
+.omx/
+
+# Runtime logs
+log/

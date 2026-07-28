@@ -1,0 +1,6 @@
+{"type":"file-history-snapshot","messageId":"aaa","snapshot":{"messageId":"aaa","trackedFileBackups":{},"timestamp":"2026-04-01T10:00:00.000Z"},"isSnapshotUpdate":false}
+{"parentUuid":null,"isSidechain":false,"type":"user","message":{"role":"user","content":"hello world"},"isMeta":true,"uuid":"bbb","timestamp":"2026-04-01T10:00:01.000Z","userType":"external"}
+{"parentUuid":"bbb","isSidechain":false,"type":"user","message":{"role":"user","content":"拉一下最新代码"},"isMeta":false,"uuid":"ccc","timestamp":"2026-04-01T10:00:02.000Z","userType":"external"}
+{"parentUuid":"ccc","isSidechain":false,"message":{"model":"claude-opus-4-6","id":"msg_001","type":"message","role":"assistant","content":[{"type":"text","text":"好的，已拉取。"}]},"type":"assistant","uuid":"ddd","timestamp":"2026-04-01T10:00:03.000Z"}
+{"parentUuid":"ddd","isSidechain":false,"type":"user","message":{"role":"user","content":"看看日志"},"isMeta":false,"uuid":"eee","timestamp":"2026-04-01T10:05:00.000Z","userType":"external"}
+{"parentUuid":"eee","isSidechain":false,"message":{"model":"claude-opus-4-6","id":"msg_002","type":"message","role":"assistant","content":[{"type":"thinking","thinking":"let me check..."},{"type":"text","text":"日志如下..."}]},"type":"assistant","uuid":"fff","timestamp":"2026-04-01T10:05:01.000Z"}
