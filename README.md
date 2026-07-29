@@ -1,5 +1,8 @@
 # claude-sessions
 
+[![CI](https://github.com/jinguo998/claude-sessions/actions/workflows/go.yml/badge.svg)](https://github.com/jinguo998/claude-sessions/actions/workflows/go.yml)
+[![CodeQL](https://github.com/jinguo998/claude-sessions/actions/workflows/codeql.yml/badge.svg)](https://github.com/jinguo998/claude-sessions/actions/workflows/codeql.yml)
+
 TUI dashboard for browsing, previewing, searching, and resuming Claude Code, Codex CLI, and OpenCode sessions across all projects.
 
 ## Install
