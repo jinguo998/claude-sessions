@@ -1,0 +1,100 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Build and publish binaries
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Set up Go
+        uses: actions/setup-go@924ae3a1cded613372ab5595356fb5720e22ba16 # v6
+        with:
+          go-version-file: go.mod
+          cache-dependency-path: go.sum
+
+      - name: Validate release tag
+        shell: bash
+        run: |
+          if [[ ! "$GITHUB_REF_NAME" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[0-9A-Za-z][0-9A-Za-z.-]*)?$ ]]; then
+            echo "Release tags must look like v1.2.3 or v1.2.3-rc.1" >&2
+            exit 1
+          fi
+
+      - name: Verify dependencies
+        run: go mod verify
+
+      - name: Build release archives
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          version="$GITHUB_REF_NAME"
+          stage_root="$(mktemp -d)"
+          trap 'rm -rf "$stage_root"' EXIT
+          mkdir -p dist
+
+          targets=(
+            "linux amd64"
+            "linux arm64"
+            "darwin amd64"
+            "darwin arm64"
+          )
+
+          for target in "${targets[@]}"; do
+            read -r goos goarch <<<"$target"
+            archive="claude-sessions_${version}_${goos}_${goarch}"
+            package_dir="$stage_root/$archive"
+            mkdir -p "$package_dir"
+
+            CGO_ENABLED=0 GOOS="$goos" GOARCH="$goarch" \
+              go build \
+                -trimpath \
+                -ldflags "-s -w -X main.version=$version" \
+                -o "$package_dir/claude-sessions" \
+                ./cmd/claude-sessions
+
+            cp README.md "$package_dir/"
+            tar -C "$stage_root" -czf "dist/$archive.tar.gz" "$archive"
+          done
+
+          version_output="$("$stage_root/claude-sessions_${version}_linux_amd64/claude-sessions" --version)"
+          test "$version_output" = "claude-sessions $version"
+
+          (
+            cd dist
+            sha256sum ./*.tar.gz > checksums.txt
+          )
+
+      - name: Publish GitHub release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          release_flags=()
+          if [[ "$GITHUB_REF_NAME" == *-* ]]; then
+            release_flags+=(--prerelease)
+          fi
+
+          gh release create "$GITHUB_REF_NAME" \
+            dist/* \
+            --verify-tag \
+            --generate-notes \
+            --title "$GITHUB_REF_NAME" \
+            "${release_flags[@]}"

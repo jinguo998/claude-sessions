@@ -7,6 +7,14 @@ TUI dashboard for browsing, previewing, searching, and resuming Claude Code, Cod
 
 ## Install
 
+Prebuilt binaries are available for Linux and macOS on both amd64 and arm64:
+
+[Download the latest release](https://github.com/jinguo998/claude-sessions/releases/latest)
+
+Each release includes a `checksums.txt` file for SHA-256 verification.
+
+Or install with Go:
+
 ```bash
 go install github.com/jinguo998/claude-sessions/cmd/claude-sessions@latest
 ```

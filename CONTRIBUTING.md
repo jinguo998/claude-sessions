@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- Go 1.22+
+- The Go version declared in `go.mod`
 - Git
 
 ## Development
@@ -51,3 +51,14 @@ testdata/                      Test fixtures
 - Follow existing patterns
 - `go vet` must pass
 - Tests required for new scanner/parser logic
+
+## Releasing
+
+Push a semantic-version tag to build and publish Linux and macOS binaries:
+
+```bash
+git tag -a v0.1.0 -m "v0.1.0"
+git push origin v0.1.0
+```
+
+Tags with a suffix such as `v0.2.0-rc.1` are published as prereleases.
