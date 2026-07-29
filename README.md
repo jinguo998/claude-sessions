@@ -7,6 +7,14 @@ TUI dashboard for browsing, previewing, searching, and resuming Claude Code, Cod
 
 ## Install
 
+Install the prebuilt binary with Homebrew:
+
+```bash
+brew install jinguo998/tap/claude-sessions
+```
+
+Or download a release directly.
+
 Prebuilt binaries are available for Linux and macOS on both amd64 and arm64:
 
 [Download the latest release](https://github.com/jinguo998/claude-sessions/releases/latest)
